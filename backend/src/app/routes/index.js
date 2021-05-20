@@ -8,4 +8,12 @@ router.get('/', (req, res) => {
 	});
 });
 
+router.post('/random/array', (req, res) => {
+	const n = req.body.arrSize;
+
+	res.json({
+		array: Array.from({ length: n }, () => Math.floor(Math.random() * n)),
+	});
+});
+
 module.exports = router;

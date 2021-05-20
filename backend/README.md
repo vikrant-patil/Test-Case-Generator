@@ -9,10 +9,11 @@
 
 ### Implemented routes
 
-| Route    | Method | Status Code | Return                             |
-| -------- | ------ | ----------- | ---------------------------------- |
-| /        | GET    | 200         | `{message: 'Test Case Generator'}` |
-| /api/v1/ | GET    | 200         | `{message: 'Test Case Generator'}` |
+| Route                | Method | Status Code | Return                             |
+| -------------------- | ------ | ----------- | ---------------------------------- |
+| /                    | GET    | 200         | `{message: 'Test Case Generator'}` |
+| /api/v1/             | GET    | 200         | `{message: 'Test Case Generator'}` |
+| /api/v1/random/array | POST   | 200         | `{array : [...]}`                  |
 
 To add routes add code to the `src/app/routes/index.js` file
 General format of a route is
