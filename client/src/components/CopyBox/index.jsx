@@ -1,15 +1,17 @@
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Heading, useColorMode } from '@chakra-ui/react';
 import { default as React } from 'react';
-import { CopyBlock, dracula } from 'react-code-blocks';
+import { CopyBlock, dracula, github } from 'react-code-blocks';
 
 export default function CopyBox({ data }) {
+	const { colorMode } = useColorMode();
+
 	return (
 		<Box mt={16}>
 			<div
 				style={{
 					width: '100%',
 					flex: 1,
-					background: '#2F855A',
+					background: colorMode === 'dark' ? '#2F855A' : '#48bb78',
 					padding: '1em',
 					paddingBottom: '2em',
 				}}>
@@ -19,14 +21,16 @@ export default function CopyBox({ data }) {
 					textAlign='center'
 					py={2}
 					isTruncated
-					color={dracula.textColor}>
+					color={
+						colorMode === 'dark' ? dracula.textColor : github.builtInColor
+					}>
 					Result
 				</Heading>
 				<CopyBlock
 					text={data}
 					wrapLines={true}
 					language='python'
-					theme={dracula}
+					theme={colorMode === 'dark' ? dracula : github}
 					customStyle={{
 						height: '250px',
 						overflowY: 'scroll',
