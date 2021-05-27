@@ -7,7 +7,7 @@ function App() {
 		<div className='App'>
 			<ChakraProvider theme={theme}>
 				<ColorModeScript />
-				<Container maxW='container.xl' margin='auto'>
+				<Container maxW='80%' margin='auto'>
 					<Header />
 					<Layout />
 				</Container>
