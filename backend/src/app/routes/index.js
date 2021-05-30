@@ -379,5 +379,27 @@ router.post("/random/charMatricesFromSet", (req, res) => {
   }
   res.json(resultJSON);
 });
-
+router.post("/random/trees", (req, res) => {
+  res.json({
+    vertexCount: 5,
+    edges: [
+      [1, 2],
+      [1, 3],
+      [3, 4],
+      [3, 5],
+    ],
+  });
+});
+router.post("/random/graphs", (req, res) => {
+  res.json({
+    vertexCount: 4,
+    edgeCount: 4,
+    edges: [
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [2, 4],
+    ],
+  });
+});
 module.exports = router;
