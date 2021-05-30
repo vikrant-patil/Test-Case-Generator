@@ -3,7 +3,7 @@ import React from 'react';
 import RandomArray from '../RandomArray';
 import RandomCharacters from '../RandomCharacters';
 import RandomNumber from '../RandomNumber';
-
+import RandomStrings from '../RandomStrings';
 export default function Layout() {
 	const dataType = [
 		'Numbers',
@@ -16,7 +16,7 @@ export default function Layout() {
 	const forms = [
 		<RandomNumber />,
 		<RandomCharacters />,
-		'Strings',
+		<RandomStrings />,
 		<RandomArray />,
 		'Graphs',
 		'Trees',
