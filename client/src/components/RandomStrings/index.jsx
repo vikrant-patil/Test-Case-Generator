@@ -13,36 +13,36 @@ import { useForm } from 'react-hook-form';
 import CopyBox from '../CopyBox';
 
 export default function RandomArray() {
-	const [array, setArray] = useState('');
+	const [results, setResults] = useState('');
 	const {
 		handleSubmit,
 		register,
-		getValues,
 		formState: { errors, isSubmitting },
 	} = useForm({
 		defaultValues: {
-			isInt: true,
-			minEle: 1,
-			maxEle: 10,
-			numTestCases: 20,
+			minEle: 'A',
+			maxEle: 'Z',
+			numTestCases: 2,
 			tcFlag: true,
-			isDistinct: true,
+			isDistinct: false,
 			isSorted: true,
-			sizeMin: 5,
+			sizeMin: 1,
 			sizeMax: 10,
+			sizeFlag: true,
 		},
 		mode: 'onBlur',
 	});
 
 	const onSubmit = async (values) => {
-		const { data } = await axios.post('/api/v1/random/arrays', values);
+		const { data } = await axios.post('/api/v1/random/strings', values);
 		if (data.message === 'Success!') {
-			let result = '\n';
-			if (data.tcFlag === true) result += `${data.numTestCases}\n\n`;
-			data.array.forEach((i) => {
-				result += `${i.size}\n${i.array}\n\n`;
+			let res = '\n';
+			if (data.tcFlag === true) res += `${data.numTestCases}\n\n`;
+			data.strings.forEach((i) => {
+				if (i.size) res += `${i.size}\n`;
+				res += `${i.string}\n\n`;
 			});
-			setArray(result);
+			setResults(res);
 		}
 	};
 
@@ -125,21 +125,9 @@ export default function RandomArray() {
 					<FormControl isInvalid={errors.maxEle}>
 						<FormLabel htmlFor='maxEle'>Maximum Element</FormLabel>
 						<Input
-							defaultValue={15}
-							type='number'
 							keepWithinRange={false}
 							clampValueOnBlur={false}
-							{...register('maxEle', {
-								valueAsNumber: true,
-								min: {
-									value: -10000,
-									message: 'The number should be between -10000 & 10000',
-								},
-								max: {
-									value: 10000,
-									message: 'The number should be between -10000 & 10000',
-								},
-							})}
+							{...register('maxEle')}
 						/>
 						{errors.maxEle && (
 							<FormErrorMessage>{errors.maxEle.message}</FormErrorMessage>
@@ -149,24 +137,9 @@ export default function RandomArray() {
 					<FormControl isInvalid={errors.minEle}>
 						<FormLabel htmlFor='minEle'>Minimum Element</FormLabel>
 						<Input
-							defaultValue={15}
-							type='number'
 							keepWithinRange={false}
 							clampValueOnBlur={false}
-							{...register('minEle', {
-								valueAsNumber: true,
-								min: {
-									value: -10000,
-									message: 'The number should be between -10000 & 10000',
-								},
-								max: {
-									value: 10000,
-									message: 'The number should be between -10000 & 10000',
-								},
-								validate: {
-									lessThanMax: (v) => parseInt(v) < getValues('maxEle'),
-								},
-							})}
+							{...register('minEle')}
 						/>
 						{errors.minEle && errors.minEle.type === 'lessThanMax' ? (
 							<FormErrorMessage>
@@ -178,8 +151,8 @@ export default function RandomArray() {
 					</FormControl>
 				</Grid>
 				<Grid templateColumns='repeat(4, 0.5fr)' gap={6} mt={4}>
-					<Checkbox name='isInt' {...register('isInt')}>
-						Integer Array
+					<Checkbox name='sizeFlag' {...register('sizeFlag')}>
+						Size Flag
 					</Checkbox>
 					<Checkbox name='tcFlag' {...register('tcFlag')}>
 						Include Test Case Flag
@@ -201,7 +174,7 @@ export default function RandomArray() {
 					Submit
 				</Button>
 			</form>
-			<CopyBox data={array} />
+			<CopyBox data={results} />
 		</>
 	);
 }

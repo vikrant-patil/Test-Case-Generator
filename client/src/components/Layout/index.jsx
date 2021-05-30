@@ -1,17 +1,7 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import React from 'react';
-import RandomArray from '../RandomArray';
-import RandomNumber from '../RandomNumber';
 
-export default function Layout() {
-	const dataType = ['Numbers', 'Strings', 'Arrays', 'Graphs', 'Trees'];
-	const forms = [
-		<RandomNumber />,
-		'Strings',
-		<RandomArray />,
-		'Graphs',
-		'Trees',
-	];
+export default function Layout({ forms, dataType }) {
 	return (
 		<Box mt={16}>
 			<Tabs isFitted variant='enclosed'>
