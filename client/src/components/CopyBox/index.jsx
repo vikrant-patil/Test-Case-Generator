@@ -32,8 +32,6 @@ export default function CopyBox({ data }) {
 					language='python'
 					theme={colorMode === 'dark' ? dracula : github}
 					customStyle={{
-						height: '250px',
-						overflowY: 'scroll',
 						margin: '0px 0.75rem',
 						borderRadius: '5px',
 						boxShadow: '1px 2px 3px rgba(0,0,0,0.35)',
