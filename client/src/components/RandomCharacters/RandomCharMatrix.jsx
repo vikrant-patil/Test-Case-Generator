@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import CopyBox from '../CopyBox';
 
-export default function RandomCharacters() {
+export default function RandomCharMatrix() {
 	const [result, setResult] = useState('');
 	const {
 		handleSubmit,
@@ -20,31 +20,36 @@ export default function RandomCharacters() {
 		formState: { errors, isSubmitting },
 	} = useForm({
 		defaultValues: {
-			minEle: 'A',
-			maxEle: 'Z',
-			numTestCases: 20,
+			rowMin: 2,
+			rowMax: 5,
+			colMin: 2,
+			colMax: 3,
+			hasSpace: false,
+			minEle: 'a',
+			maxEle: 'z',
+			numTestCases: 2,
 			tcFlag: true,
-			isDistinct: true,
-			isSorted: false,
+			isDistinct: false,
 		},
 		mode: 'onBlur',
 	});
 
 	const onSubmit = async (values) => {
-		console.log(values);
-		const { data } = await axios.post('/api/v1/random/characters', values);
+		const { data } = await axios.post(
+			'/api/v1/random/characters/matrix',
+			values,
+		);
 
 		if (data.message === 'Success!') {
 			let res = '\n';
 			if (data.tcFlag === true) res += `${data.numTestCases}\n\n`;
-			data.array.forEach((i) => {
-				res += `${i}\n`;
+			data.matrices.forEach((i) => {
+				if (i.rowSize) res += `${i.rowSize} ${i.colSize}\n`;
+				res += `${i.matrix}\n\n`;
 			});
 			setResult(res);
 		}
 	};
-
-	console.log(errors);
 
 	return (
 		<>
@@ -100,15 +105,83 @@ export default function RandomCharacters() {
 						)}
 					</FormControl>
 				</Grid>
+
+				<Grid templateColumns='repeat(4, 1fr)' gap={6} mt={4}>
+					{' '}
+					<FormControl isInvalid={errors.rowMin}>
+						<FormLabel htmlFor='rowMin'>Minimum rows</FormLabel>
+						<Input
+							type='number'
+							keepWithinRange={false}
+							clampValueOnBlur={false}
+							{...register('rowMin', {
+								valueAsNumber: true,
+								min: {
+									value: -10000,
+									message: 'The number should be between -10000 & 10000',
+								},
+								max: {
+									value: 10000,
+									message: 'The number should be between -10000 & 10000',
+								},
+							})}
+						/>
+						{errors.rowMin && (
+							<FormErrorMessage>{errors.rowMin.message}</FormErrorMessage>
+						)}
+					</FormControl>
+					<FormControl isInvalid={errors.rowMax}>
+						<FormLabel htmlFor='rowMax'>Maximum Rows</FormLabel>
+						<Input
+							keepWithinRange={false}
+							clampValueOnBlur={false}
+							{...register('rowMax')}
+						/>
+						{errors.rowMax && errors.rowMax.type === 'greaterThanMin' ? (
+							<FormErrorMessage>
+								Max value should be greater than min
+							</FormErrorMessage>
+						) : (
+							<FormErrorMessage>{errors.maxEle?.message}</FormErrorMessage>
+						)}
+					</FormControl>
+					<FormControl isInvalid={errors.colMin}>
+						<FormLabel htmlFor='colMin'>Minimum Columns</FormLabel>
+						<Input
+							keepWithinRange={false}
+							clampValueOnBlur={false}
+							{...register('colMin')}
+						/>
+						{errors.colMin && (
+							<FormErrorMessage>{errors.maxEle?.message}</FormErrorMessage>
+						)}
+					</FormControl>
+					<FormControl isInvalid={errors.colMax}>
+						<FormLabel htmlFor='colMax'>Minimum Columns</FormLabel>
+						<Input
+							keepWithinRange={false}
+							clampValueOnBlur={false}
+							{...register('colMax')}
+						/>
+						{errors.colMax && errors.colMax.type === 'greaterThanMin' ? (
+							<FormErrorMessage>
+								Max value should be greater than min
+							</FormErrorMessage>
+						) : (
+							<FormErrorMessage>{errors.maxEle?.message}</FormErrorMessage>
+						)}
+					</FormControl>
+				</Grid>
+
 				<Grid templateColumns='repeat(3, 1fr)' gap={2} mt={4}>
 					<Checkbox name='tcFlag' {...register('tcFlag')}>
 						Include Test Case Flag
 					</Checkbox>
 					<Checkbox name='isDistinct' {...register('isDistinct')}>
-						Distinct Array
+						Distinct Matrices
 					</Checkbox>
-					<Checkbox name='isSorted' {...register('isSorted')}>
-						Sorted Array
+					<Checkbox name='hasSpace' {...register('hasSpace')}>
+						Has Space
 					</Checkbox>
 				</Grid>
 				<Button

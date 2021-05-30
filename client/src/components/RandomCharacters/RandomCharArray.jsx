@@ -12,28 +12,29 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import CopyBox from '../CopyBox';
 
-export default function RandomNumber() {
+export default function RandomCharArray() {
 	const [result, setResult] = useState('');
 	const {
 		handleSubmit,
 		register,
 		formState: { errors, isSubmitting },
-		getValues,
 	} = useForm({
 		defaultValues: {
-			isFloat: true,
-			minEle: 10,
-			maxEle: 212,
+			minEle: 'A',
+			maxEle: 'Z',
 			numTestCases: 20,
 			tcFlag: true,
 			isDistinct: true,
-			isSorted: true,
+			isSorted: false,
 		},
 		mode: 'onBlur',
 	});
 
 	const onSubmit = async (values) => {
-		const { data } = await axios.post('/api/v1/random/numbers/array', values);
+		const { data } = await axios.post(
+			'/api/v1/random/characters/array',
+			values,
+		);
 
 		if (data.message === 'Success!') {
 			let res = '\n';
@@ -75,20 +76,9 @@ export default function RandomNumber() {
 					<FormControl isInvalid={errors.minEle}>
 						<FormLabel htmlFor='minEle'>Minimum</FormLabel>
 						<Input
-							type='number'
 							keepWithinRange={false}
 							clampValueOnBlur={false}
-							{...register('minEle', {
-								valueAsNumber: true,
-								min: {
-									value: -10000,
-									message: 'The number should be between -10000 & 10000',
-								},
-								max: {
-									value: 10000,
-									message: 'The number should be between -10000 & 10000',
-								},
-							})}
+							{...register('minEle')}
 						/>
 						{errors.minEle && (
 							<FormErrorMessage>{errors.minEle.message}</FormErrorMessage>
@@ -97,23 +87,9 @@ export default function RandomNumber() {
 					<FormControl isInvalid={errors.maxEle}>
 						<FormLabel htmlFor='maxEle'>Maximum</FormLabel>
 						<Input
-							type='number'
 							keepWithinRange={false}
 							clampValueOnBlur={false}
-							{...register('maxEle', {
-								valueAsNumber: true,
-								min: {
-									value: -10000,
-									message: 'The number should be between -10000 & 10000',
-								},
-								max: {
-									value: 10000,
-									message: 'The number should be between -10000 & 10000',
-								},
-								validate: {
-									greaterThanMin: (v) => parseInt(v) > getValues('minEle'),
-								},
-							})}
+							{...register('maxEle')}
 						/>
 						{errors.maxEle && errors.maxEle.type === 'greaterThanMin' ? (
 							<FormErrorMessage>
@@ -124,10 +100,7 @@ export default function RandomNumber() {
 						)}
 					</FormControl>
 				</Grid>
-				<Grid templateColumns='repeat(4, 1fr)' gap={2} mt={4}>
-					<Checkbox name='isFloat' {...register('isFloat')}>
-						Float values
-					</Checkbox>
+				<Grid templateColumns='repeat(3, 1fr)' gap={2} mt={4}>
 					<Checkbox name='tcFlag' {...register('tcFlag')}>
 						Include Test Case Flag
 					</Checkbox>

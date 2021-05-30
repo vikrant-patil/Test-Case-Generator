@@ -18,7 +18,7 @@ function randomNumberInt(min, max) {
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-router.post('/random/numbers', (req, res) => {
+router.post('/random/numbers/arrays', (req, res) => {
 	const isFloat = req.body.isFloat;
 	const minEle = req.body.minEle;
 	const maxEle = req.body.maxEle;
@@ -128,7 +128,7 @@ router.post('/random/arrays', (req, res) => {
 	res.json(resultJSON);
 });
 
-router.post('/random/characters', (req, res) => {
+router.post('/random/characters/array', (req, res) => {
 	const isDistinct = req.body.isDistinct;
 	const maxEle = req.body.maxEle.charCodeAt(0);
 	const minEle = req.body.minEle.charCodeAt(0);
@@ -207,7 +207,7 @@ router.post('/random/strings', (req, res) => {
 	res.json(resultJSON);
 });
 
-router.post('/random/numberMatrices', (req, res) => {
+router.post('/random/numbers/matrix', (req, res) => {
 	const rowMin = req.body.rowMin;
 	const rowMax = req.body.rowMax;
 	const colMin = req.body.colMin;
@@ -273,7 +273,7 @@ router.post('/random/numberMatrices', (req, res) => {
 	res.json(resultJSON);
 });
 
-router.post('/random/charMatrices', (req, res) => {
+router.post('/random/characters/matrix', (req, res) => {
 	const rowMin = req.body.rowMin;
 	const rowMax = req.body.rowMax;
 	const colMin = req.body.colMin;
