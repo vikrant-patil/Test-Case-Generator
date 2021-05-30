@@ -328,57 +328,56 @@ router.post("/random/charMatrices", (req, res) => {
 });
 
 router.post("/random/charMatricesFromSet", (req, res) => {
-	const rowMin = req.body.rowMin;
-	const rowMax = req.body.rowMax;
-	const colMin = req.body.colMin;
-	const colMax = req.body.colMax;
-	const hasSpace = req.body.hasSpace;
-	const isDistinct = req.body.isDistinct;
-	const charSet=req.body.charSet.split(" ");
-	const numTestCases = req.body.numTestCases;
-	const tcFlag = req.body.tcFlag;
-	var resultJSON = {};
-	if (colMax * rowMax > charSet.length && isDistinct) {
-	  resultJSON.message = "Invalid Constraints. Please Check them Again!!";
-	} else {
-	  resultJSON.message = "Success!";
-	  if (tcFlag) {
-		resultJSON.tcFlag = tcFlag;
-		resultJSON.numTestCases = numTestCases;
-	  }
-	  resultJSON.hasSpace = hasSpace;
-	  var arrayOfCharMatrices = [];
-	  for (var i = 0; i < numTestCases; i++) {
-		var jsonOfMatrix = {};
-		var row = randomNumberInt(rowMin, rowMax);
-		var col = randomNumberInt(colMin, colMax);
-		jsonOfMatrix.rowSize = row;
-		jsonOfMatrix.colSize = col;
-		var a = [];
-		for (var j = 0; j < row; j++) {
-		  var b = [];
-		  for (var k = 0; k < col; k++) {
-			var num = charSet[randomNumberInt(0, charSet.length-1)];
-			if (isDistinct) {
-			  while (b.includes(num)) {
-				num = charSet[randomNumberInt(0, charSet.length-1)];
-			  }
-			}
-			b.push(num);
-		  }
-		  if (hasSpace) {
-			a.push(b);
-		  } else {
-			a.push(b.join(""));
-		  }
-		}
-		jsonOfMatrix.matrix = a;
-		arrayOfCharMatrices.push(jsonOfMatrix);
-	  }
-	  resultJSON.matrices = arrayOfCharMatrices;
-	}
-	res.json(resultJSON);
-  });
-
+  const rowMin = req.body.rowMin;
+  const rowMax = req.body.rowMax;
+  const colMin = req.body.colMin;
+  const colMax = req.body.colMax;
+  const hasSpace = req.body.hasSpace;
+  const isDistinct = req.body.isDistinct;
+  const charSet = req.body.charSet.split(" ");
+  const numTestCases = req.body.numTestCases;
+  const tcFlag = req.body.tcFlag;
+  var resultJSON = {};
+  if (colMax * rowMax > charSet.length && isDistinct) {
+    resultJSON.message = "Invalid Constraints. Please Check them Again!!";
+  } else {
+    resultJSON.message = "Success!";
+    if (tcFlag) {
+      resultJSON.tcFlag = tcFlag;
+      resultJSON.numTestCases = numTestCases;
+    }
+    resultJSON.hasSpace = hasSpace;
+    var arrayOfCharMatrices = [];
+    for (var i = 0; i < numTestCases; i++) {
+      var jsonOfMatrix = {};
+      var row = randomNumberInt(rowMin, rowMax);
+      var col = randomNumberInt(colMin, colMax);
+      jsonOfMatrix.rowSize = row;
+      jsonOfMatrix.colSize = col;
+      var a = [];
+      for (var j = 0; j < row; j++) {
+        var b = [];
+        for (var k = 0; k < col; k++) {
+          var num = charSet[randomNumberInt(0, charSet.length - 1)];
+          if (isDistinct) {
+            while (b.includes(num)) {
+              num = charSet[randomNumberInt(0, charSet.length - 1)];
+            }
+          }
+          b.push(num);
+        }
+        if (hasSpace) {
+          a.push(b);
+        } else {
+          a.push(b.join(""));
+        }
+      }
+      jsonOfMatrix.matrix = a;
+      arrayOfCharMatrices.push(jsonOfMatrix);
+    }
+    resultJSON.matrices = arrayOfCharMatrices;
+  }
+  res.json(resultJSON);
+});
 
 module.exports = router;
