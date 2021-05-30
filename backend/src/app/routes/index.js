@@ -18,7 +18,7 @@ function randomNumberInt(min, max) {
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-router.post('/random/numbers/arrays', (req, res) => {
+router.post('/random/numbers/array', (req, res) => {
 	const isFloat = req.body.isFloat;
 	const minEle = req.body.minEle;
 	const maxEle = req.body.maxEle;
