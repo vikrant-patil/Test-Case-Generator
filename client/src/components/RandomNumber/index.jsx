@@ -16,8 +16,13 @@ export default function RandomNumber() {
 		getValues,
 	} = useForm({
 		defaultValues: {
-			minValue: 15,
-			maxValue: 30,
+			isFloat: true,
+			minEle: 10,
+			maxEle: 212,
+			numTestCases: 20,
+			tcFlag: true,
+			isDistinct: true,
+			isSorted: true,
 		},
 		mode: 'onBlur',
 	});

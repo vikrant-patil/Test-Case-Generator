@@ -7,9 +7,11 @@ import {
 	Grid,
 	Input,
 } from '@chakra-ui/react';
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import CopyBox from '../CopyBox';
+
 export default function RandomArray() {
 	const [array, setArray] = useState('');
 	const {
@@ -19,22 +21,28 @@ export default function RandomArray() {
 		formState: { errors, isSubmitting },
 	} = useForm({
 		defaultValues: {
-			numTestCases: 10,
-			sizeMin: 0,
-			sizeMax: 10000,
-			maxEle: 10000,
-			minEle: 1000,
 			isInt: true,
+			minEle: 1,
+			maxEle: 10,
+			numTestCases: 20,
 			tcFlag: true,
 			isDistinct: true,
+			isSorted: true,
+			sizeMin: 5,
+			sizeMax: 10,
 		},
 		mode: 'onBlur',
 	});
 
 	const onSubmit = async (values) => {
-		//const { data } = await axios.post('/api/v1/random/array', values);
-		//setArray(JSON.stringify(data.array));
-		console.log(values);
+		const { data } = await axios.post('/api/v1/random/arrays', values);
+		if (data.message === 'Success!') {
+			let result = '';
+			data.array.forEach((i) => {
+				result += `${i.size}\n${i.array}\n\n`;
+			});
+			setArray(result);
+		}
 	};
 
 	return (
@@ -168,15 +176,18 @@ export default function RandomArray() {
 						)}
 					</FormControl>
 
-					<Grid templateColumns='repeat(3, 1fr)' gap={6}>
+					<Grid templateColumns='repeat(4, 1fr)' gap={6}>
 						<Checkbox name='isInt' {...register('isInt')}>
-							Is Integer Array
+							Integer Array
 						</Checkbox>
 						<Checkbox name='tcFlag' {...register('tcFlag')}>
 							Include Test Case Flag
 						</Checkbox>
 						<Checkbox name='isDistinct' {...register('isDistinct')}>
 							Distinct Array
+						</Checkbox>
+						<Checkbox name='isSorted' {...register('isSorted')}>
+							Sorted Array
 						</Checkbox>
 					</Grid>
 				</Grid>
