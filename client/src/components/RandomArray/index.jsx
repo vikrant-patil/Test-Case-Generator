@@ -37,7 +37,8 @@ export default function RandomArray() {
 	const onSubmit = async (values) => {
 		const { data } = await axios.post('/api/v1/random/arrays', values);
 		if (data.message === 'Success!') {
-			let result = '';
+			let result = '\n';
+			if (data.tcFlag === true) result += `${data.numTestCases}\n\n`;
 			data.array.forEach((i) => {
 				result += `${i.size}\n${i.array}\n\n`;
 			});
@@ -175,23 +176,21 @@ export default function RandomArray() {
 							<FormErrorMessage>{errors.minEle?.message}</FormErrorMessage>
 						)}
 					</FormControl>
-
-					<Grid templateColumns='repeat(4, 1fr)' gap={6}>
-						<Checkbox name='isInt' {...register('isInt')}>
-							Integer Array
-						</Checkbox>
-						<Checkbox name='tcFlag' {...register('tcFlag')}>
-							Include Test Case Flag
-						</Checkbox>
-						<Checkbox name='isDistinct' {...register('isDistinct')}>
-							Distinct Array
-						</Checkbox>
-						<Checkbox name='isSorted' {...register('isSorted')}>
-							Sorted Array
-						</Checkbox>
-					</Grid>
 				</Grid>
-
+				<Grid templateColumns='repeat(4, 0.5fr)' gap={6} mt={4}>
+					<Checkbox name='isInt' {...register('isInt')}>
+						Integer Array
+					</Checkbox>
+					<Checkbox name='tcFlag' {...register('tcFlag')}>
+						Include Test Case Flag
+					</Checkbox>
+					<Checkbox name='isDistinct' {...register('isDistinct')}>
+						Distinct Array
+					</Checkbox>
+					<Checkbox name='isSorted' {...register('isSorted')}>
+						Sorted Array
+					</Checkbox>
+				</Grid>
 				<Button
 					mt={8}
 					bg='green.400'
